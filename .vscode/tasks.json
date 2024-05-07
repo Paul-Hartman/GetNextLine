@@ -5,11 +5,9 @@
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",
             "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "cc",
+                "get_next_line.c",
+				"get_next_line_util.c"
             ],
             "options": {
                 "cwd": "${fileDirname}"

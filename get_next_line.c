@@ -6,54 +6,52 @@
 /*   By: phartman <phartman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:17:46 by phartman          #+#    #+#             */
-/*   Updated: 2024/05/07 17:05:48 by phartman         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:56:46 by phartman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 
-char *get_line(int fd)
+char *get_next_line(int fd)
 {
 	char *line;
 	char *buf;
 	ssize_t size_read;
 	static t_list *stash;
+	char *newline;
+	t_list *current;
 	if(!stash)
 		stash = ft_lstnew(NULL);
-	buf = malloc(BUFFER_SIZE);
+	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf) return (NULL);
 	size_read = read(fd, buf, BUFFER_SIZE);
 	if (size_read > 0)
-		stash->content = ft_strdup(buf);
-	while(size_read > 0)
+		stash->content = ft_strndup(buf, BUFFER_SIZE +1);
+	while(size_read > 0 && !newline)
 	{
 		size_read = read(fd, buf, BUFFER_SIZE);
-		ft_lstadd_back(&stash, ft_lstnew(ft_strdup(buf)));
+		newline = ft_strrchr(buf, '\n');
+		if(newline)
+		{
+			ft_lstadd_back(&stash, ft_lstnew(ft_strndup(buf, (newline - buf)+1)));
+			ft_lstadd_back(&stash, ft_lstnew(ft_strndup(newline + 1, ft_strlen(newline - 1))));
+			break;
+		}
+		ft_lstadd_back(&stash, ft_lstnew(ft_strndup(buf, BUFFER_SIZE +1)));
 	}
+	line = malloc(ft_lstsize(stash) * BUFFER_SIZE);
+	ft_strlcpy(line, stash->content, BUFFER_SIZE);
+	stash->content = newline;
+	current = stash->next;
+	while(current->next)
+	{
+		ft_strlcat(line, current->content, BUFFER_SIZE + 1);
+		current = current->next;
+	}
+	ft_strlcat(line, current->content, BUFFER_SIZE - ft_strlen(newline));
 	return (line);
 }
-
-
-char *get_next_line(int fd)
-{
-	static int ct;
-	int i;
-	char ch;
-	ssize_t size_read;
-	
-	ct = 0;
-	i=0;
-	while(size_read > 0 && i < ct)
-	{
-		size_read = read(fd, &ch, 1);
-		if(ch == '\n')
-			i++;
-	}
-	ct++;
-	return (get_line(fd));
-}
-
 
 
 int main(int argc, char const *argv[])
