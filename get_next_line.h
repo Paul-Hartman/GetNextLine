@@ -6,7 +6,7 @@
 /*   By: phartman <phartman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:18:39 by phartman          #+#    #+#             */
-/*   Updated: 2024/05/07 18:55:07 by phartman         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:04:05 by phartman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 100
 #endif
 typedef struct s_list
 {

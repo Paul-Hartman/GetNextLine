@@ -6,7 +6,7 @@
 /*   By: phartman <phartman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 17:17:46 by phartman          #+#    #+#             */
-/*   Updated: 2024/05/07 18:56:46 by phartman         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:20:10 by phartman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char *get_next_line(int fd)
 		if(newline)
 		{
 			ft_lstadd_back(&stash, ft_lstnew(ft_strndup(buf, (newline - buf)+1)));
-			ft_lstadd_back(&stash, ft_lstnew(ft_strndup(newline + 1, ft_strlen(newline - 1))));
+			ft_lstadd_back(&stash, ft_lstnew(ft_strndup(newline + 1, ft_strlen(newline)-1)));
 			break;
 		}
 		ft_lstadd_back(&stash, ft_lstnew(ft_strndup(buf, BUFFER_SIZE +1)));
@@ -44,7 +44,7 @@ char *get_next_line(int fd)
 	ft_strlcpy(line, stash->content, BUFFER_SIZE);
 	stash->content = newline;
 	current = stash->next;
-	while(current->next)
+	while(current)
 	{
 		ft_strlcat(line, current->content, BUFFER_SIZE + 1);
 		current = current->next;
@@ -65,12 +65,9 @@ int main(int argc, char const *argv[])
 		printf("failed to open");
 		return (1);
 	}
-	while(i < 14)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		i++;
-	}
+	str = get_next_line(fd);
+	printf("%s", str);
+	i++;
 	close(fd);
 	return 0;
 }
