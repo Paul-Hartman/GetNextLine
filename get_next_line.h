@@ -29,7 +29,7 @@ typedef struct s_list
 
 
 int	ft_lstsize(t_list *lst);
-char	*ft_strrchr(const char *s, int c);
+char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 char	*ft_strndup(const char *s, size_t n);
 t_list	*ft_lstlast(t_list *lst);

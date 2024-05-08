@@ -2,24 +2,20 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build get_next_line",
             "type": "shell",
-            "command": "cc",
+            "label": "build",
+            "command": "gcc",
             "args": [
-                "-g",  // Include debugging symbols
-                "-Wall",  // Enable all warnings
-                "get_next_line.c",
-                "get_next_line_utils.c",
-                "-o",  // Specify the output file
-                "get_next_line"  // Output file name
+                "-g",
+                "${workspaceFolder}/get_next_line.c",
+                "${workspaceFolder}/get_next_line_utils.c",
+                "-o",
+                "${workspaceFolder}/get_next_line"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": [
-                "$gcc"  // Using the built-in problem matcher for gcc
-            ]
+            }
         }
     ]
 }

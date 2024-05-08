@@ -12,20 +12,21 @@
 
 #include "get_next_line.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	size_t			len;
+	size_t			i;
 	unsigned char	uc;
 
 	uc = c;
-	len = ft_strlen(s);
-	if (uc == 0)
-		return ((char *)&s[len]);
-	while (len--)
+	i = 0;
+	while (s[i])
 	{
-		if (s[len] == uc)
-			return ((char *)&s[len]);
+		if (s[i] == uc)
+			return ((char *)&s[i]);
+		i++;
 	}
+	if (uc == 0)
+		return ((char *)&s[i]);
 	return (NULL);
 }
 

@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug get_next_line",
+            "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/get_next_line",
@@ -10,7 +10,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -19,8 +19,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "build get_next_line",
-            "miDebuggerPath": "/usr/bin/gdb"  // Update this path if your gdb is located elsewhere
+            "preLaunchTask": "build"
         }
     ]
 }
