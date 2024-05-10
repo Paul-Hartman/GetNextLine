@@ -69,10 +69,14 @@ char *get_next_line(int fd)
 	}
 	if(newline)
 	{
+		char *temp = current->content;
 		current->content = ft_substr(current->content, 0, (newline - current->content)+1);
 		if(newline[1])
 			ft_lstadd_back(&stash, ft_lstnew(ft_substr(newline, 1, ft_strlen(newline)-1)));
+		if(temp != current->content)
+			free(temp);
 	}
+
 	line = malloc(ft_lstsize(stash) * BUFFER_SIZE + 1);
 	line[0] = '\0';
 	if (!line) return (NULL);
@@ -80,13 +84,17 @@ char *get_next_line(int fd)
 	while(current)
 	{
 		ft_strlcat(line, current->content, (ft_lstsize(stash) * BUFFER_SIZE)+1);
-		if (current->content[ft_strlen(current->content) - 1] == '\n' || !newline) break;
+		if (current->content[ft_strlen(current->content) - 1] == '\n') break;
 		current = current->next;
 	}
-	if(current->next != NULL && current)
+	if(size_read > 0 && current && current->content)
 	{
 		current = current->next;
-		stash->content = ft_strdup(current->content);
+		
+		char *temp = stash->content;
+		if(current)
+			stash->content = ft_strdup(current->content);
+		free(temp);
 		list_clear(&(stash->next));
 	}
 	else
@@ -113,7 +121,7 @@ int main()
 		printf("failed to open");
 		return (1);
 	}
-	while(i < 14)
+	while(i < 3)
 	{
 		str = get_next_line(fd);
 		printf("%s", str);
