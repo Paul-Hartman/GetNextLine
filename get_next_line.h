@@ -19,7 +19,7 @@
 # include <fcntl.h>
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10
+# define BUFFER_SIZE 1
 #endif
 typedef struct s_list
 {
@@ -34,10 +34,11 @@ size_t	ft_strlen(const char *s);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+void list_clear(t_list **head);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
 char *get_next_line(int fd);
 
 #endif
