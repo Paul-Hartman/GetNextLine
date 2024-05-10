@@ -137,3 +137,33 @@ int main()
 	close(fd);
 	return 0;
 }
+// psuedocode for getnextline string form
+
+// initialise string buffer to buffer size +1
+// initialize string stash to 
+// initialize line
+// preset set readsize to 1 
+// if on stash is empty
+// 	while !newline && readsize > 0
+// 		read to buf
+// 		add to stash
+// 		check for newline in stash strchr newline = strchr
+// 		increment counter for line malloc
+// else 
+// 	check for newline in stash strchr newline = strchr
+// 	while !newline && readsize > 0
+// 		read to buf
+// 		add to stash
+// 		check for newline in stash strchr newline = strchr
+// 		increment counter for line malloc
+	
+// if newline is not null
+// 	set line to stash up to and including the first char of newline
+// 	if(newline[1] is not null)
+// 		set stash to newline minus the newline newline[1]
+// 	else stash = null
+// else if(size read = 0)
+// 	set line to all of stash 
+// free buf
+// return line 
+		
