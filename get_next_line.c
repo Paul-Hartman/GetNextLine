@@ -80,11 +80,10 @@ char *get_next_line(int fd)
 	while(current)
 	{
 		ft_strlcat(line, current->content, (ft_lstsize(stash) * BUFFER_SIZE)+1);
-		if (current->content[ft_strlen(current->content) - 1] == '\n') break;
+		if (current->content[ft_strlen(current->content) - 1] == '\n' || !newline) break;
 		current = current->next;
-		
 	}
-	if(current->next != NULL)
+	if(current->next != NULL && current)
 	{
 		current = current->next;
 		stash->content = ft_strdup(current->content);
@@ -114,7 +113,7 @@ int main()
 		printf("failed to open");
 		return (1);
 	}
-	while(i < 5)
+	while(i < 14)
 	{
 		str = get_next_line(fd);
 		printf("%s", str);
