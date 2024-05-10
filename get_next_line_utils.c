@@ -40,20 +40,16 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strndup(const char *s, size_t n)
+char	*ft_strdup(const char *s)
 {
 	int		i;
 	char	*dup;
-	size_t len;
 
 	i = 0;
-	len = ft_strlen(s) + 1;
-	if (len > n)
-		len = n;
-	dup = malloc(len +1);
+	dup = malloc(ft_strlen(s) + 1);
 	if (!dup)
 		return (NULL);
-	while (s[i] && i < len)
+	while (s[i])
 	{
 		dup[i] = s[i];
 		i++;
@@ -114,24 +110,6 @@ int	ft_lstsize(t_list *lst)
 	return (i);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	i;
-
-	i = 0;
-	if (size != 0)
-	{
-		while (i < size -1 && src[i])
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	while (src[i])
-		i++;
-	return (i);
-}
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
@@ -157,6 +135,47 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	if (size <= dst_len)
 		return (src_len + size);
 	return (dst_len + src_len);
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	unsigned char		*memdest;
+	const unsigned char	*memsrc;
+	size_t				i;
+
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	i = 0;
+	memdest = dest;
+	memsrc = src;
+	while (i < n)
+	{
+		memdest[i] = memsrc[i];
+		i++;
+	}
+	return (dest);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	true_len;
+	size_t	str_len;
+
+	if (!s)
+		return (NULL);
+	str_len = ft_strlen(s);
+	if (start >= str_len)
+		return (ft_strdup(""));
+	true_len = str_len - start;
+	if (true_len > len)
+		true_len = len;
+	sub = malloc(true_len + 1);
+	if (!sub)
+		return (NULL);
+	ft_memcpy(sub, s + start, true_len);
+	sub[true_len] = '\0';
+	return (sub);
 }
 
 

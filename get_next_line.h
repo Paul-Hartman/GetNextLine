@@ -31,12 +31,13 @@ typedef struct s_list
 int	ft_lstsize(t_list *lst);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
-char	*ft_strndup(const char *s, size_t n);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strdup(const char *s);
 char *get_next_line(int fd);
 
 #endif
