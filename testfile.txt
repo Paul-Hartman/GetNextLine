@@ -1,3 +1,8 @@
-1
-2
-3
+ghsgh 
+
+By following these 
+practices, you
+ can ensure that your use of size_read
+  and buffer management is robust, preventing errors 
+  and ensuring your program handles file I/O safely and effecti
+  vely.
