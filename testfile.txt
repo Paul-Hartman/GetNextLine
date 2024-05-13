@@ -1,8 +1,12 @@
-ghsgh 
+The Random Word Generator is a tool to help you create 
+a list of random words. There are many reasons one might 
+be interested in doing this, and you're likely here because you're 
+interested in creating a random word list. This tool can help you do 
+exactly that.
 
-By following these 
-practices, you
- can ensure that your use of size_read
-  and buffer management is robust, preventing errors 
-  and ensuring your program handles file I/O safely and effecti
-  vely.
+The tool is easy to use. All you need 
+to do is choose the number of words you want to create 
+(the default is five, but you can input any number you'd like) and 
+the type of words you want. You can choose from all words, verbs 
+only, nouns only or adjective only depending on which best meets 
+your needs
