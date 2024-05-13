@@ -9,4 +9,4 @@ to do is choose the number of words you want to create
 (the default is five, but you can input any number you'd like) and 
 the type of words you want. You can choose from all words, verbs 
 only, nouns only or adjective only depending on which best meets 
-your needs
+your needs.

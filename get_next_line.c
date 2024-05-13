@@ -13,112 +13,6 @@
 #include "get_next_line.h"
 
 
-void list_clear(t_list **head)
-{
-	t_list *current = *head;
-	t_list *next;
-
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current->content);
-		free(current);
-		current = next;
-	}
-
-	*head = NULL;
-}
-
-// 
-// 	char *line;
-// 	char *buf;
-// 	ssize_t size_read;
-// 	static t_list *stash;
-// 	char *newline;
-// 	t_list *current;
-// 	buf = malloc(BUFFER_SIZE + 1);
-// 	if (!buf) return (NULL);
-// 	newline= NULL;
-	
-// 	size_read = 1;
-	
-// 	if (!stash)
-// 	{	
-// 		while (!newline && size_read > 0)
-// 		{
-// 			size_read = read(fd, buf, BUFFER_SIZE);
-// 			buf[size_read] = '\0';
-// 			ft_lstadd_back(&stash, ft_lstnew(ft_strdup(buf)));
-// 			current = ft_lstlast(stash);
-// 			newline = ft_strchr(current->content, '\n');
-// 		}
-// 	}
-// 	else
-// 	{
-// 		newline = ft_strchr(stash->content, '\n');
-// 		current = ft_lstlast(stash);
-// 		while (!newline && size_read > 0)
-// 		{
-// 			size_read = read(fd, buf, BUFFER_SIZE);
-// 			buf[size_read] = '\0';
-// 			ft_lstadd_back(&stash, ft_lstnew(ft_strdup(buf)));
-// 			current = ft_lstlast(stash);
-// 			newline = ft_strchr(current->content, '\n');
-// 		}
-// 	}
-// 	if(newline)
-// 	{
-// 		char *temp = current->content;
-// 		current->content = ft_substr(current->content, 0, (newline - current->content)+1);
-// 		if(newline[1] && ft_strlen(newline) > 0)
-// 			ft_lstadd_back(&stash, ft_lstnew(ft_substr(newline, 1, ft_strlen(newline)-1)));
-// 		if(temp != current->content)
-// 		{
-// 			free(temp);
-// 			temp = NULL;
-// 		}
-			
-// 	}
-
-// 	line = malloc(ft_lstsize(stash) * BUFFER_SIZE + 1);
-// 	line[0] = '\0';
-// 	if (!line) return (NULL);
-// 	current = stash;
-// 	while(current)
-// 	{
-// 		ft_strlcat(line, current->content, (ft_lstsize(stash) * BUFFER_SIZE)+1);
-// 		if (ft_strlen(current->content) > 0 && current->content[ft_strlen(current->content) - 1] == '\n') break;
-// 		current = current->next;
-// 	}
-// 	if(size_read > 0 && current && current->content)
-// 	{
-// 		current = current->next;
-		
-// 		char *temp = stash->content;
-// 		if(current)
-// 			stash->content = ft_strdup(current->content);
-// 		free(temp);
-// 		temp = NULL;
-// 		list_clear(&(stash->next));
-// 	}
-// 	else
-// 	{
-// 		list_clear(&(stash));
-// 		stash = NULL;
-// 	}
-		
-// 	free(buf);
-// 	buf = NULL;
-// 	return (line);
-// }
-
-// 	}
-		
-// 	free(buf);
-// 	buf = NULL;
-// 	return (line);
-// }
-
 char *add_to_string(char *str, char *buf)
 {
 	char *newstr;
@@ -128,10 +22,10 @@ char *add_to_string(char *str, char *buf)
 		return (NULL);
 	size = ft_strlen(str) + ft_strlen(buf) + 1;
 	newstr = malloc(size);
-	newstr[0] = '\0';
+	ft_bzero(newstr, size);
 	ft_strlcat(newstr, str, size);
 	ft_strlcat(newstr, buf, size);
-	//free(str);
+	free(str);
 	return(newstr);
 }
 
@@ -141,22 +35,23 @@ char *read_until_newline(char **newline, char **stash, int fd)
 	ssize_t readsize;
 	if(*stash == NULL)
 	{
-		*stash = malloc(BUFFER_SIZE);
+		*stash = malloc(BUFFER_SIZE +1);
 		*stash[0] = '\0';
 	}
 	if(*stash == NULL) return (NULL);	
 	readsize = 1;
 	buf = malloc(BUFFER_SIZE + 1);
+	ft_bzero(buf, BUFFER_SIZE + 1);
 	if(!buf) return (NULL);
 	while(*newline == NULL && readsize > 0)
 	{
 		readsize = read(fd, buf, BUFFER_SIZE);
 		if (readsize == 0)break;
-		buf[BUFFER_SIZE] = '\0';
 		*stash = add_to_string(*stash, buf);
 		*newline = ft_strchr(*stash, '\n');
 	}
 	free(buf);
+	buf = NULL;
 	return(*stash);
 }
 
@@ -165,6 +60,7 @@ char *get_next_line(int fd)
 	char *line;
 	static char *stash;
 	char *newline;
+	char *temp;
 	newline = NULL;
 	if(stash)
 		newline = ft_strchr(stash, '\n');
@@ -173,16 +69,25 @@ char *get_next_line(int fd)
 	if(newline)
 	{
 		line = ft_substr(stash, 0 , (newline - stash) + 1);
-		//free(stash);
+		temp = NULL;
 		if(newline[1])
-			stash = ft_substr(newline, 1, ft_strlen(newline) - 1);
+		{
+			temp = ft_substr(newline, 1, ft_strlen(newline) - 1);
+			free(stash);
+			stash = temp;
+		}
 		else
+		{
+			free(stash);
 			stash = NULL;
+		}
 	}
 	else
+	{
 		line = ft_strdup(stash);
-	//if(newline)
-		//free(newline);
+		free(stash);
+		stash = NULL;
+	}
 	return (line);
 }
 

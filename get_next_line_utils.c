@@ -58,59 +58,6 @@ char	*ft_strdup(const char *s)
 	return (dup);
 }
 
-t_list	*ft_lstlast(t_list *lst)
-{
-	if (lst == NULL)
-		return (NULL);
-	while (lst->next)
-	{
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*end;
-
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		end = ft_lstlast(*lst);
-		if (end)
-			end->next = new;
-	}
-}
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*node;
-
-	node = malloc(sizeof(t_list));
-	if (!node)
-		return (NULL);
-	node->content = content;
-	node->next = NULL;
-	return (node);
-}
-
-int	ft_lstsize(t_list *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst)
-	{
-		i++;
-		if(lst->next == NULL)
-			break;
-		lst = lst->next;
-	}
-	return (i);
-}
-
-
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t	i;
@@ -137,23 +84,16 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	return (dst_len + src_len);
 }
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned char		*memdest;
-	const unsigned char	*memsrc;
-	size_t				i;
+	unsigned char	*mem;
 
-	if (dest == NULL && src == NULL)
-		return (NULL);
-	i = 0;
-	memdest = dest;
-	memsrc = src;
-	while (i < n)
+	mem = s;
+	while (n--)
 	{
-		memdest[i] = memsrc[i];
-		i++;
+		*mem++ = (unsigned char)c;
 	}
-	return (dest);
+	return (s);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -178,4 +118,47 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	size_t	total_size;
+	void	*mem;
 
+	if (nmemb == 0 || size == 0)
+		return (malloc(1));
+	if ((int)nmemb < 0 || (int)size < 0 || nmemb > __SIZE_MAX__ / size)
+		return (NULL);
+	total_size = nmemb * size;
+	mem = malloc(total_size);
+	if (mem == NULL)
+		return (NULL);
+	ft_memset(mem, 0, total_size);
+	return (mem);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*mem;
+
+	mem = s;
+	while (n--)
+		*mem++ = 0;
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	unsigned char		*memdest;
+	const unsigned char	*memsrc;
+	size_t				i;
+
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	i = 0;
+	memdest = dest;
+	memsrc = src;
+	while (i < n)
+	{
+		memdest[i] = memsrc[i];
+		i++;
+	}
+	return (dest);
+}
