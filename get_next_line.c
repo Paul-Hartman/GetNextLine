@@ -46,7 +46,12 @@ char *read_until_newline(char **newline, char **stash, int fd)
 	while(*newline == NULL && readsize > 0)
 	{
 		readsize = read(fd, buf, BUFFER_SIZE);
+		buf[readsize] = '\0';
 		if (readsize == 0)break;
+		if(readsize == -1)
+		{
+			
+		} 
 		*stash = add_to_string(*stash, buf);
 		*newline = ft_strchr(*stash, '\n');
 	}
@@ -61,15 +66,19 @@ char *get_next_line(int fd)
 	static char *stash;
 	char *newline;
 	char *temp;
+
+	if(fd < 0 || BUFFER_SIZE <=0 || read(fd, 0, 0) < 0)
+		return (NULL);
 	newline = NULL;
 	if(stash)
 		newline = ft_strchr(stash, '\n');
 	if(!newline)
+	{
 		stash = read_until_newline(&newline, &stash, fd);
+	}
 	if(newline)
 	{
 		line = ft_substr(stash, 0 , (newline - stash) + 1);
-		temp = NULL;
 		if(newline[1])
 		{
 			temp = ft_substr(newline, 1, ft_strlen(newline) - 1);
@@ -88,58 +97,33 @@ char *get_next_line(int fd)
 		free(stash);
 		stash = NULL;
 	}
+	if (*line == '\0')
+	{
+		free(line);
+		return(NULL);
+	}
 	return (line);
 }
 
-int main()
-{
-	char *str;
-	int fd;
-	int i = 0;
-	fd = open("testfile.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("failed to open");
-		return (1);
-	}
-	while(i < 12)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		free(str);
-		str = NULL;
-		i++;
-	}
-	close(fd);
-	return 0;
-}
-// psuedocode for getnextline string form
-
-// initialise string buffer to buffer size +1
-// initialize string stash to 
-// initialize line
-// preset set readsize to 1 
-// if on stash is empty
-// 	while !newline && readsize > 0
-// 		read to buf
-// 		add to stash
-// 		check for newline in stash strchr newline = strchr
-// 		increment counter for line malloc
-// else 
-// 	check for newline in stash strchr newline = strchr
-// 	while !newline && readsize > 0
-// 		read to buf
-// 		add to stash
-// 		check for newline in stash strchr newline = strchr
-// 		increment counter for line malloc
-	
-// if newline is not null
-// 	set line to stash up to and including the first char of newline
-// 	if(newline[1] is not null)
-// 		set stash to newline minus the newline newline[1]
-// 	else stash = null
-// else if(size read = 0)
-// 	set line to all of stash 
-// free buf
-// return line 
-		
+// int main()
+// {
+// 	char *str;
+// 	int fd;
+// 	int i = 0;
+// 	fd = open("testfile.txt", O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 		printf("failed to open");
+// 		return (1);
+// 	}
+// 	while(i < 12)
+// 	{
+// 		str = get_next_line(fd);
+// 		printf("%s", str);
+// 		free(str);
+// 		str = NULL;
+// 		i++;
+// 	}
+// 	close(fd);
+// 	return 0;
+// }
