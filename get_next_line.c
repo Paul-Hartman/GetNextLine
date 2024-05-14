@@ -12,7 +12,36 @@
 
 #include "get_next_line.h"
 
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*mem;
 
+	mem = s;
+	while (n--)
+		*mem++ = 0;
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	true_len;
+	size_t	str_len;
+
+	if (!s)
+		return (NULL);
+	str_len = ft_strlen(s);
+	if (start >= str_len)
+		return (ft_strdup(""));
+	true_len = str_len - start;
+	if (true_len > len)
+		true_len = len;
+	sub = malloc(true_len + 1);
+	if (!sub)
+		return (NULL);
+	ft_memcpy(sub, s + start, true_len);
+	sub[true_len] = '\0';
+	return (sub);
+}
 
 char	*add_to_string(char *str, char *buf)
 {
@@ -38,15 +67,14 @@ char	*read_until_newline(char **newline, char **stash, int fd)
 	if (*stash == NULL)
 	{
 		*stash = malloc(BUFFER_SIZE + 1);
+		if (!*stash)
+			return (NULL);
 		*stash[0] = '\0';
 	}
-	if (*stash == NULL)
-		return (NULL);
 	readsize = 1;
 	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
-	ft_bzero(buf, BUFFER_SIZE + 1);
 	while (*newline == NULL && readsize > 0)
 	{
 		readsize = read(fd, buf, BUFFER_SIZE);
@@ -57,8 +85,7 @@ char	*read_until_newline(char **newline, char **stash, int fd)
 		*newline = ft_strchr(*stash, '\n');
 	}
 	free(buf);
-	buf = NULL;
-	return (*stash);
+	return (*newline);
 }
 
 char	*get_next_line(int fd)
@@ -69,67 +96,22 @@ char	*get_next_line(int fd)
 	char		*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-	{
-		if(stash)
-		{
-			free(stash);
-			stash = NULL;
-		}
-		return (NULL);
-	}
+		return (free(stash), stash = NULL);
 	newline = NULL;
+	temp = NULL;
 	if (stash)
 		newline = ft_strchr(stash, '\n');
-	if (!newline)
-		stash = read_until_newline(&newline, &stash, fd);
-	if (newline)
+	if (!read_until_newline(&newline, &stash, fd))
+		line = ft_strdup(stash);
+	else
 	{
 		line = ft_substr(stash, 0, (newline - stash) + 1);
 		if (newline[1])
-		{
 			temp = ft_substr(newline, 1, ft_strlen(newline) - 1);
-			free(stash);
-			stash = temp;
-		}
-		else
-		{
-			free(stash);
-			stash = NULL;
-		}
 	}
-	else
-	{
-		line = ft_strdup(stash);
-		free(stash);
-		stash = NULL;
-	}
-	if (*line == '\0')
-	{
-		free(line);
-		return (NULL);
-	}
+	free(stash);
+	stash = temp;
+	if (*line == '\0' || !line)
+		return (free(line), NULL);
 	return (line);
 }
-
-// int main()
-// {
-// 	char *str;
-// 	int fd;
-// 	int i = 0;
-// 	fd = open("testfile.txt", O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		printf("failed to open");
-// 		return (1);
-// 	}
-// 	while(i < 9)
-// 	{
-// 		str = get_next_line(fd);
-// 		printf("%s", str);
-// 		free(str);
-// 		str = NULL;
-// 		i++;
-// 	}
-// 	close(fd);
-// 	return 0;
-// }

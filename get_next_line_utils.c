@@ -84,37 +84,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	return (dst_len + src_len);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*sub;
-	size_t	true_len;
-	size_t	str_len;
-
-	if (!s)
-		return (NULL);
-	str_len = ft_strlen(s);
-	if (start >= str_len)
-		return (ft_strdup(""));
-	true_len = str_len - start;
-	if (true_len > len)
-		true_len = len;
-	sub = malloc(true_len + 1);
-	if (!sub)
-		return (NULL);
-	ft_memcpy(sub, s + start, true_len);
-	sub[true_len] = '\0';
-	return (sub);
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*mem;
-
-	mem = s;
-	while (n--)
-		*mem++ = 0;
-}
-
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	unsigned char		*memdest;
@@ -133,5 +102,3 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
-
-
