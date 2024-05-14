@@ -115,5 +115,3 @@ char	*get_next_line(int fd)
 		return (free(line), NULL);
 	return (line);
 }
-
-
