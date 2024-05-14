@@ -13,12 +13,13 @@
 #include "get_next_line.h"
 
 
-char *add_to_string(char *str, char *buf)
-{
-	char *newstr;
-	int size;
 
-	if(!str || !buf)
+char	*add_to_string(char *str, char *buf)
+{
+	char	*newstr;
+	int		size;
+
+	if (!str || !buf)
 		return (NULL);
 	size = ft_strlen(str) + ft_strlen(buf) + 1;
 	newstr = malloc(size);
@@ -26,60 +27,65 @@ char *add_to_string(char *str, char *buf)
 	ft_strlcat(newstr, str, size);
 	ft_strlcat(newstr, buf, size);
 	free(str);
-	return(newstr);
+	return (newstr);
 }
 
-char *read_until_newline(char **newline, char **stash, int fd)
+char	*read_until_newline(char **newline, char **stash, int fd)
 {
-	char *buf;
-	ssize_t readsize;
-	if(*stash == NULL)
+	char	*buf;
+	ssize_t	readsize;
+
+	if (*stash == NULL)
 	{
-		*stash = malloc(BUFFER_SIZE +1);
+		*stash = malloc(BUFFER_SIZE + 1);
 		*stash[0] = '\0';
 	}
-	if(*stash == NULL) return (NULL);	
+	if (*stash == NULL)
+		return (NULL);
 	readsize = 1;
 	buf = malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
 	ft_bzero(buf, BUFFER_SIZE + 1);
-	if(!buf) return (NULL);
-	while(*newline == NULL && readsize > 0)
+	while (*newline == NULL && readsize > 0)
 	{
 		readsize = read(fd, buf, BUFFER_SIZE);
 		buf[readsize] = '\0';
-		if (readsize == 0)break;
-		if(readsize == -1)
-		{
-			
-		} 
+		if (readsize == 0)
+			break ;
 		*stash = add_to_string(*stash, buf);
 		*newline = ft_strchr(*stash, '\n');
 	}
 	free(buf);
 	buf = NULL;
-	return(*stash);
+	return (*stash);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	char *line;
-	static char *stash;
-	char *newline;
-	char *temp;
+	char		*line;
+	static char	*stash;
+	char		*newline;
+	char		*temp;
 
-	if(fd < 0 || BUFFER_SIZE <=0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		if(stash)
+		{
+			free(stash);
+			stash = NULL;
+		}
 		return (NULL);
-	newline = NULL;
-	if(stash)
-		newline = ft_strchr(stash, '\n');
-	if(!newline)
-	{
-		stash = read_until_newline(&newline, &stash, fd);
 	}
-	if(newline)
+	newline = NULL;
+	if (stash)
+		newline = ft_strchr(stash, '\n');
+	if (!newline)
+		stash = read_until_newline(&newline, &stash, fd);
+	if (newline)
 	{
-		line = ft_substr(stash, 0 , (newline - stash) + 1);
-		if(newline[1])
+		line = ft_substr(stash, 0, (newline - stash) + 1);
+		if (newline[1])
 		{
 			temp = ft_substr(newline, 1, ft_strlen(newline) - 1);
 			free(stash);
@@ -100,7 +106,7 @@ char *get_next_line(int fd)
 	if (*line == '\0')
 	{
 		free(line);
-		return(NULL);
+		return (NULL);
 	}
 	return (line);
 }
@@ -116,7 +122,7 @@ char *get_next_line(int fd)
 // 		printf("failed to open");
 // 		return (1);
 // 	}
-// 	while(i < 12)
+// 	while(i < 9)
 // 	{
 // 		str = get_next_line(fd);
 // 		printf("%s", str);

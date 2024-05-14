@@ -7,10 +7,13 @@
             "command": "gcc",
             "args": [
                 "-g",
-                "${workspaceFolder}/get_next_line.c",
-                "${workspaceFolder}/get_next_line_utils.c",
-                "-o",
-                "${workspaceFolder}/get_next_line"
+				 "get_next_line.c",
+				"get_next_line_utils.c",
+				"test_gnl.c",
+				 "-D",
+				"BUFFER_SIZE=1000000",
+				"-o",
+				"get_next_line"
             ],
             "group": {
                 "kind": "build",

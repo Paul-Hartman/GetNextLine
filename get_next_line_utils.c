@@ -84,18 +84,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	return (dst_len + src_len);
 }
 
-void	*ft_memset(void *s, int c, size_t n)
-{
-	unsigned char	*mem;
-
-	mem = s;
-	while (n--)
-	{
-		*mem++ = (unsigned char)c;
-	}
-	return (s);
-}
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*sub;
@@ -116,23 +104,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ft_memcpy(sub, s + start, true_len);
 	sub[true_len] = '\0';
 	return (sub);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	size_t	total_size;
-	void	*mem;
-
-	if (nmemb == 0 || size == 0)
-		return (malloc(1));
-	if ((int)nmemb < 0 || (int)size < 0 || nmemb > __SIZE_MAX__ / size)
-		return (NULL);
-	total_size = nmemb * size;
-	mem = malloc(total_size);
-	if (mem == NULL)
-		return (NULL);
-	ft_memset(mem, 0, total_size);
-	return (mem);
 }
 
 void	ft_bzero(void *s, size_t n)
@@ -162,3 +133,5 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
+
+

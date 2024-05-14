@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
+#include <string.h>
+
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 15
@@ -32,5 +34,6 @@ void	ft_bzero(void *s, size_t n);
 char *add_to_string(char *str, char *buf);
 char *read_until_newline(char **newline, char **stash, int fd);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
+
 
 #endif

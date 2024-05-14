@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "Debug get_next_line",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/get_next_line",
@@ -19,7 +19,16 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "build"
+            "preLaunchTask": "build",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "logging": {
+                "programOutput": true,
+                "engineLogging": true,
+                "trace": true
+            },
+            "linux": {
+                "MIMode": "gdb"
+            }
         }
     ]
 }
